@@ -1,0 +1,6 @@
+---
+name: Duplicate Reporter
+description: Increments git tag based on the provided version type
+runs:
+  using: node12
+  main: action/index.js
