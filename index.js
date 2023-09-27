@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const exec = require("@actions/github");
-import {jscpd} from 'jscpd';
+import {detectClones} from 'jscpd';
 
 
 // const clones = jscpd(process.argv);
