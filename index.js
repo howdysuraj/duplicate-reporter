@@ -13,7 +13,7 @@ const clones = await detectClones({
   console.log(clones);
 async function run() {
     try {
-      core.info("Hello From Duplicate Logger",clones)
+      core.info("Hello From Duplicate Logger",clones, __dirname)
     } catch (error) {
         core.setFailed(error.message);
     }
