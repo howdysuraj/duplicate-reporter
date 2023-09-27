@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const exec = require("@actions/github");
 import {detectClones} from 'jscpd';
 
-
+const path = require('path')
 // const clones = jscpd(process.argv);
 // const clones = await detectClones({
 //     path: [
