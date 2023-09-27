@@ -17,7 +17,7 @@ const exec = __nccwpck_require__(66448);
 // const clones = jscpd(process.argv);
 const clones = await (0,jscpd__WEBPACK_IMPORTED_MODULE_0__.detectClones)({
     path: [
-      __dirname 
+      __dirname +'/'
     ],
     silent: true
   });
