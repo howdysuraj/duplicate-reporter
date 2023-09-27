@@ -86849,7 +86849,7 @@ const path = __nccwpck_require__(71017)
 //   report/jscpd-report.json
 async function run() {
     try {
-      let filename = path.join(__dirname, 'report', 'jscpd-report.json');
+      let filename = path.join(process.cwd(), 'report', 'jscpd-report.json').replace('/fyle-app/fyle-app/','/fyle-app/');
       const coverage = __nccwpck_require__(25387)(filename);
       console.log("coverage",coverage)
       core.info("Hello From Duplicate Logger", __dirname)
