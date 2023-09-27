@@ -1,9 +1,9 @@
 const core = require('@actions/core');
 const exec = require("@actions/github");
+import {jscpd} from 'jscpd';
 
-const js = require('jscpd')
 
-const clones = js(process.argv);
+const clones = jscpd(process.argv);
 
 async function run() {
     try {
