@@ -15,7 +15,7 @@ const path = require('path')
 //   report/jscpd-report.json
 async function run() {
     try {
-      let filename = path.join(process.cwd(), 'report', 'jscpd-report.json');
+      let filename = path.join(__dirname, 'report', 'jscpd-report.json');
       const coverage = require(filename);
       console.log("coverage",coverage)
       core.info("Hello From Duplicate Logger", __dirname)
