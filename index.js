@@ -10,7 +10,7 @@ const clones = await detectClones({
     ],
     silent: true
   });
-  console.log(clones);
+  console.log(clones,__dirname);
 async function run() {
     try {
       core.info("Hello From Duplicate Logger",clones, __dirname)

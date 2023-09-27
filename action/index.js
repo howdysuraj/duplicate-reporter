@@ -21,7 +21,7 @@ const clones = await (0,jscpd__WEBPACK_IMPORTED_MODULE_0__.detectClones)({
     ],
     silent: true
   });
-  console.log(clones);
+  console.log(clones,__dirname);
 async function run() {
     try {
       core.info("Hello From Duplicate Logger",clones, __dirname)
