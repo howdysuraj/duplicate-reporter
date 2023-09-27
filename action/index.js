@@ -86776,9 +86776,9 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(17346);
 const exec = __nccwpck_require__(66448);
 
-const jscpd = __nccwpck_require__(73238)
+const js = __nccwpck_require__(73238)
 
-const clones = jscpd(process.argv);
+const clones = js(process.argv);
 
 async function run() {
     try {
