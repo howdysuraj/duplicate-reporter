@@ -2858,7 +2858,7 @@ async function generateBadges(report){
     const string = ``;
     for (const [key, value] of Object.entries(report.formats)) {
         console.log(`${key}: ${value}`);
-        string += `\n ![${type}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`
+        string += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`
       }
 //    const badges = report.formats.map( type => {
 //     return ` ![${type}](https://img.shields.io/badge/${type}-${type.total.percentage}%25-${color}) `
