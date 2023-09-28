@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const fs = require('fs');
 
 async function generateBadges(report){
-    const string = ``;
+    let string = ``;
     for (const [key, value] of Object.entries(report.formats)) {
         console.log(`${key}: ${value}`);
         string += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`
