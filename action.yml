@@ -5,6 +5,9 @@ inputs:
   path:
     description: 'Filepath to jscpd report file'
     required: true
+  token:
+    description: 'Github Token'
+    required: true
 runs:
   using: node16
   main: action/index.js
