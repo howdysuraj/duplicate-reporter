@@ -2855,10 +2855,15 @@ const core = __nccwpck_require__(346);
 const fs = __nccwpck_require__(147);
 
 async function generateBadges(report){
-   const badges = report.formats.map( type => {
-    return ` ![${type}](https://img.shields.io/badge/${type}-${type.total.percentage}%25-${color}) `
-   })
-   return badges.join(' \n');
+    const string = ``;
+    for (const [key, value] of Object.entries(report.formats)) {
+        console.log(`${key}: ${value}`);
+        string += `\n ![${type}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`
+      }
+//    const badges = report.formats.map( type => {
+//     return ` ![${type}](https://img.shields.io/badge/${type}-${type.total.percentage}%25-${color}) `
+//    })
+   return string;
 }
 
 async function run() {
