@@ -3,22 +3,13 @@ const exec = require("@actions/github");
 import {detectClones} from 'jscpd';
 
 const path = require('path')
-// const clones = jscpd(process.argv);
-// const clones = await detectClones({
-//     path: [
-//       __dirname +'/'
-//     ],
-//     silent: true
-//   });
-//   console.log(clones,__dirname);
 
-//   report/jscpd-report.json
 async function run() {
     try {
-      let filename = path.join(process.cwd(), 'report', 'jscpd-report.json').replace('/fyle-app/fyle-app/','/fyle-app/');
-      const coverage = require(filename);
-      console.log("coverage",coverage)
-      core.info("Hello From Duplicate Logger", __dirname)
+      const filepath = core.getInput("path");
+      const data = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/${filepath}`, 'utf8');
+      const json = JSON.parse(data);
+      core.info(json)
     } catch (error) {
         core.setFailed(error.message);
     }

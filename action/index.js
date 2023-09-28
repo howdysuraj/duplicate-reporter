@@ -57479,21 +57479,6 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
-/***/ 25387:
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 25387;
-module.exports = webpackEmptyContext;
-
-/***/ }),
-
 /***/ 39491:
 /***/ ((module) => {
 
@@ -86837,22 +86822,13 @@ const exec = __nccwpck_require__(66448);
 
 
 const path = __nccwpck_require__(71017)
-// const clones = jscpd(process.argv);
-// const clones = await detectClones({
-//     path: [
-//       __dirname +'/'
-//     ],
-//     silent: true
-//   });
-//   console.log(clones,__dirname);
 
-//   report/jscpd-report.json
 async function run() {
     try {
-      let filename = path.join(process.cwd(), 'report', 'jscpd-report.json').replace('/fyle-app/fyle-app/','/fyle-app/');
-      const coverage = __nccwpck_require__(25387)(filename);
-      console.log("coverage",coverage)
-      core.info("Hello From Duplicate Logger", __dirname)
+      const filepath = core.getInput("path");
+      const data = fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/${filepath}`, 'utf8');
+      const json = JSON.parse(data);
+      core.info(json)
     } catch (error) {
         core.setFailed(error.message);
     }

@@ -1,6 +1,10 @@
 ---
 name: Duplicate Reporter
 description: Increments git tag based on the provided version type
+inputs:
+  path:
+    description: 'Filepath to jscpd report file'
+    required: true
 runs:
-  using: node12
+  using: node18
   main: action/index.js
