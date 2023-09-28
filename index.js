@@ -1,8 +1,5 @@
 const core = require('@actions/core');
-const exec = require("@actions/github");
-import {detectClones} from 'jscpd';
 const fs = require('fs');
-const path = require('path')
 
 async function run() {
     try {
