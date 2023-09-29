@@ -26,7 +26,7 @@ async function run() {
     core.info(json.statistics);
     const badgesString = await generateBadges(json.statistics);
     core.info(badgesString);
-    appendBadgeToReadMe()
+    appendBadgeToReadMe(badgesString)
   } catch (error) {
     core.setFailed(error.message);
   }
