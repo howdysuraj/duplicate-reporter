@@ -9859,7 +9859,7 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
 
 async function commitNewReadme( path, sha, encoding, updatedContent){
     try {
-		await octokit.request(`PUT /repos/fylein/fyle-app/readme`, {
+		await octokit.request(`PUT /repos/fyle/fyle-app/contents/README.me`, {
 			message: "Update README",
 			content: Buffer.from(updatedContent, "utf-8").toString(encoding),
 			path,
