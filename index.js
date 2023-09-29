@@ -23,9 +23,7 @@ async function run() {
       "utf8"
     );
     const json = JSON.parse(data);
-    core.info(json.statistics);
     const badgesString = await generateBadges(json.statistics);
-    core.info(badgesString);
     appendBadgeToReadMe(badgesString)
   } catch (error) {
     core.setFailed(error.message);
@@ -46,13 +44,12 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
     const rawContent = Buffer.from(content, encoding).toString();
     const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
     const updatedContent = `${startIndex === -1 ? rawContent : rawContent.slice(0, startIndex)}\n${badge}`;
-    console.log('updated',updatedContent)
     commitNewReadme(repo, path, sha, encoding, updatedContent);
 };
 
 async function commitNewReadme(repo, path, sha, encoding, updatedContent){
     try {
-		await client.request(`PUT /repos/fylein/fyle-app/readme`, {
+		await octokit.request(`PUT /repos/fylein/fyle-app/readme`, {
 			message: "Update README",
 			content: Buffer.from(updatedContent, "utf-8").toString(encoding),
 			path,
