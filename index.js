@@ -44,10 +44,10 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
     const rawContent = Buffer.from(content, encoding).toString();
     const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
     const updatedContent = `${startIndex === -1 ? rawContent : rawContent.slice(0, startIndex)}\n${badge}`;
-    commitNewReadme(repo, path, sha, encoding, updatedContent);
+    commitNewReadme( path, sha, encoding, updatedContent);
 };
 
-async function commitNewReadme(repo, path, sha, encoding, updatedContent){
+async function commitNewReadme( path, sha, encoding, updatedContent){
     try {
 		await octokit.request(`PUT /repos/fylein/fyle-app/readme`, {
 			message: "Update README",
