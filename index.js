@@ -42,6 +42,7 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
     }
   })
     const { path, sha, content, encoding } = res.data;
+    console.log("ssshshs",sha)
     const rawContent = Buffer.from(content, encoding).toString();
     const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
     const updatedContent = `${startIndex === -1 ? rawContent : rawContent.slice(0, startIndex)}\n${badge}`;
@@ -55,6 +56,8 @@ async function commitNewReadme( path, sha, encoding, updatedContent){
 			content: Buffer.from(updatedContent, "utf-8").toString(encoding),
 			path,
 			sha,
+            owner:'fylein',
+            repo:'fyle-app',
             branch:'duplicate-logger'
 		});
 	} catch (err) {
