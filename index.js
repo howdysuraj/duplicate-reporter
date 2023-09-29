@@ -45,7 +45,7 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
     const { path, sha, content, encoding } = res.data;
     const rawContent = Buffer.from(content, encoding).toString();
     const startIndex = rawContent.indexOf("## Other Projects");
-    core.info(res)
+   console.log(path, sha, content, encoding)
 }
 
 run();
