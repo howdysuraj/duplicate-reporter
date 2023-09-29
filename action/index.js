@@ -9843,7 +9843,15 @@ async function run() {
 }
 
 async function appendBadgeToReadMe(){
-    const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
+    // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
+
+const res = await octokit.request('GET /repos/fylein/fyle-app//readme', {
+    owner: 'OWNER',
+    repo: 'REPO',
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
     const { path, sha, content, encoding } = res.data;
     const rawContent = Buffer.from(content, encoding).toString();
     const startIndex = rawContent.indexOf("## Other Projects");
