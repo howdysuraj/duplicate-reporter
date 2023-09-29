@@ -33,7 +33,7 @@ async function run() {
 async function appendBadgeToReadMe(badge){
     // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
 
-const res = await octokit.request('GET /repos/fylein/fyle-app/readme?ref=duplicate-logger', {
+const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
     owner: 'OWNER',
     repo: 'REPO',
     branch:'duplicate-logger',
