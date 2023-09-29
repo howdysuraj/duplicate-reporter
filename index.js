@@ -6,7 +6,7 @@ let octokit;
 
 
 async function generateBadges(report) {
-  let string = ``;
+  let string = `### Code Duplication Stats in app-v2`;
   for (const [key, value] of Object.entries(report.formats)) {
     console.log(`${key}: ${value}`);
     string += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`;
