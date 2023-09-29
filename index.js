@@ -32,7 +32,7 @@ async function run() {
   }
 }
 
-async function appendBadgeToReadMe(){
+async function appendBadgeToReadMe(badge){
     // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
 
 const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
@@ -44,8 +44,9 @@ const res = await octokit.request('GET /repos/fylein/fyle-app/readme', {
   })
     const { path, sha, content, encoding } = res.data;
     const rawContent = Buffer.from(content, encoding).toString();
-    const startIndex = rawContent.indexOf("## Other Projects");
-   console.log(path, sha, content, encoding)
+    const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
+    const updatedContent = `${startIndex === -1 ? rawContent : rawContent.slice(0, startIndex)}\n${badge}`;
+    console.log('updated',updatedContent)
 }
 
 run();
