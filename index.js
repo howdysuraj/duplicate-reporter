@@ -1,17 +1,14 @@
 const core = require("@actions/core");
-const fs = require("fs");
 const github = require("@actions/github");
-
+const fs = require("fs");
 let octokit;
 
-
 async function generateBadges(report) {
-  let string = `### Code Duplication Stats in app-v2`;
+  let badgeContent = `### Code Duplication Stats in app-v2`;
   for (const [key, value] of Object.entries(report.formats)) {
-    console.log(`${key}: ${value}`);
-    string += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`;
+    badgeContent += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`;
   }
-  return string;
+  return badgeContent;
 }
 
 async function run() {
@@ -31,9 +28,11 @@ async function run() {
 }
 
 async function appendBadgeToReadMe(badge) {
-  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: process.env.GITHUB_REF_NAME}); 
+  const res = await octokit.request(
+    `GET /repos/fylein/fyle-app/contents/README.md`,
+    { ref: process.env.GITHUB_REF_NAME }
+  );
   const { path, sha, content, encoding } = res.data;
-  console.log("ssshshs", sha, process.env.GITHUB_REF_NAME);
   const rawContent = Buffer.from(content, encoding).toString();
   const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
   const updatedContent = `${
@@ -49,12 +48,10 @@ async function commitNewReadme(path, sha, encoding, updatedContent) {
       content: Buffer.from(updatedContent, "utf-8").toString(encoding),
       path,
       sha,
-      // owner: "fylein",
-      // repo: "fyle-app",
       branch: process.env.GITHUB_REF_NAME,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    core.setFailed(error.message);
   }
 }
 

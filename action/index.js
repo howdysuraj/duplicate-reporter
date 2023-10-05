@@ -9809,19 +9809,16 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const core = __nccwpck_require__(7346);
-const fs = __nccwpck_require__(7147);
 const github = __nccwpck_require__(6448);
-
+const fs = __nccwpck_require__(7147);
 let octokit;
 
-
 async function generateBadges(report) {
-  let string = `### Code Duplication Stats in app-v2`;
+  let badgeContent = `### Code Duplication Stats in app-v2`;
   for (const [key, value] of Object.entries(report.formats)) {
-    console.log(`${key}: ${value}`);
-    string += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`;
+    badgeContent += `\n ![${key}](https://img.shields.io/badge/${key}-${value.total.percentage}%25-lightgrey)`;
   }
-  return string;
+  return badgeContent;
 }
 
 async function run() {
@@ -9841,9 +9838,11 @@ async function run() {
 }
 
 async function appendBadgeToReadMe(badge) {
-  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: process.env.GITHUB_REF_NAME}); 
+  const res = await octokit.request(
+    `GET /repos/fylein/fyle-app/contents/README.md`,
+    { ref: process.env.GITHUB_REF_NAME }
+  );
   const { path, sha, content, encoding } = res.data;
-  console.log("ssshshs", sha, process.env.GITHUB_REF_NAME);
   const rawContent = Buffer.from(content, encoding).toString();
   const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
   const updatedContent = `${
@@ -9859,12 +9858,10 @@ async function commitNewReadme(path, sha, encoding, updatedContent) {
       content: Buffer.from(updatedContent, "utf-8").toString(encoding),
       path,
       sha,
-      // owner: "fylein",
-      // repo: "fyle-app",
       branch: process.env.GITHUB_REF_NAME,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    core.setFailed(error.message);
   }
 }
 
