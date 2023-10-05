@@ -12,7 +12,7 @@ async function generateBadges(report) {
 }
 
 async function run() {
-  console.log("ref",process.env.GITHUB_REF_NAME)
+  console.log("ref",process.env.GITHUB_REF)
   try {
     octokit = new github.getOctokit(core.getInput("token"));
     const filepath = core.getInput("path");
