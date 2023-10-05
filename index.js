@@ -2,7 +2,7 @@ const core = require("@actions/core");
 const fs = require("fs");
 const github = require("@actions/github");
 const octokit = require("@octokit/core");
-const client = new octokit.Octokit({ auth: core.getInput("token") });
+let client ;
 // let octokit;
 // const {
 //   createOrUpdateTextFile,
@@ -22,6 +22,7 @@ async function generateBadges(report) {
 
 async function run() {
   try {
+    new octokit.Octokit({ auth: core.getInput("token") });
    // octokit = new github.getOctokit(core.getInput("token"));
     // octokit = new MyOctokit({ auth: core.getInput("token") });
     // const filepath = core.getInput("path");
