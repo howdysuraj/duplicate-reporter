@@ -10889,7 +10889,7 @@ const core = __nccwpck_require__(7346);
 const fs = __nccwpck_require__(7147);
 const github = __nccwpck_require__(6448);
 const octokit = __nccwpck_require__(1865);
-const client = new octokit.Octokit({ auth: core.getInput("token") });
+let client ;
 // let octokit;
 // const {
 //   createOrUpdateTextFile,
@@ -10909,6 +10909,7 @@ async function generateBadges(report) {
 
 async function run() {
   try {
+    client = new octokit.Octokit({ auth: core.getInput("token") });
    // octokit = new github.getOctokit(core.getInput("token"));
     // octokit = new MyOctokit({ auth: core.getInput("token") });
     // const filepath = core.getInput("path");
