@@ -31,20 +31,9 @@ async function run() {
 }
 
 async function appendBadgeToReadMe(badge) {
-  // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
-
   const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: "duplicate-logger"}); 
-  // await octokit.request("GET /repos/fylein/fyle-app/readme", {
-  //   owner: "OWNER",
-  //   repo: "REPO",
-  //   branch: "duplicate-logger",
-  //   headers: {
-  //     "X-GitHub-Api-Version": "2022-11-28",
-  //   },
-  // });
-  console.log("Response",res);
   const { path, sha, content, encoding } = res.data;
-  console.log("ssshshs", sha);
+  console.log("ssshshs", sha, process.env.GITHUB_REF);
   const rawContent = Buffer.from(content, encoding).toString();
   const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
   const updatedContent = `${
