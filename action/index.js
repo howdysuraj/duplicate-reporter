@@ -9843,7 +9843,7 @@ async function run() {
 async function appendBadgeToReadMe(badge) {
   // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
 
-  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`); 
+  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{branch: "duplicate-logger"}); 
   // await octokit.request("GET /repos/fylein/fyle-app/readme", {
   //   owner: "OWNER",
   //   repo: "REPO",
@@ -9852,6 +9852,7 @@ async function appendBadgeToReadMe(badge) {
   //     "X-GitHub-Api-Version": "2022-11-28",
   //   },
   // });
+  console.log("Response",res);
   const { path, sha, content, encoding } = res.data;
   console.log("ssshshs", sha);
   const rawContent = Buffer.from(content, encoding).toString();
