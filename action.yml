@@ -8,6 +8,9 @@ inputs:
   token:
     description: 'Github Token'
     required: true
+  branch:
+    description: 'PR Initiator Branch'
+    required: true
 runs:
   using: node16
   main: action/index.js

@@ -31,7 +31,7 @@ async function run() {
 async function appendBadgeToReadMe(badge) {
   const res = await octokit.request(
     `GET /repos/fylein/fyle-app/contents/README.md`,
-    { ref: process.env.GITHUB_REF_NAME }
+    { ref: core.getInput("branch") }
   );
   const { path, sha, content, encoding } = res.data;
   const rawContent = Buffer.from(content, encoding).toString();
@@ -49,7 +49,7 @@ async function commitNewReadme(path, sha, encoding, updatedContent) {
       content: Buffer.from(updatedContent, "utf-8").toString(encoding),
       path,
       sha,
-      branch: process.env.GITHUB_REF_NAME,
+      branch: core.getInput("branch"),
     });
   } catch (error) {
     core.setFailed(error.message);
