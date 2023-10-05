@@ -9841,7 +9841,7 @@ async function run() {
 }
 
 async function appendBadgeToReadMe(badge) {
-  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: "duplicate-logger"}); 
+  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: process.env.GITHUB_REF_NAME}); 
   const { path, sha, content, encoding } = res.data;
   console.log("ssshshs", sha, process.env.GITHUB_REF_NAME);
   const rawContent = Buffer.from(content, encoding).toString();
@@ -9855,13 +9855,13 @@ async function appendBadgeToReadMe(badge) {
 async function commitNewReadme(path, sha, encoding, updatedContent) {
   try {
     await octokit.request(`PUT /repos/fylein/fyle-app/contents/README.md`, {
-      message: "Update README",
+      message: "Added Code Duplicate Report",
       content: Buffer.from(updatedContent, "utf-8").toString(encoding),
       path,
       sha,
-      owner: "fylein",
-      repo: "fyle-app",
-      branch: "duplicate-logger",
+      // owner: "fylein",
+      // repo: "fyle-app",
+      branch: process.env.GITHUB_REF_NAME,
     });
   } catch (err) {
     console.log(err);
