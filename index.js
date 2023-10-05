@@ -22,7 +22,7 @@ async function generateBadges(report) {
 
 async function run() {
   try {
-    new octokit.Octokit({ auth: core.getInput("token") });
+    client = new octokit.Octokit({ auth: core.getInput("token") });
    // octokit = new github.getOctokit(core.getInput("token"));
     // octokit = new MyOctokit({ auth: core.getInput("token") });
     // const filepath = core.getInput("path");
