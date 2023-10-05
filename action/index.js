@@ -9811,6 +9811,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7346);
 const fs = __nccwpck_require__(7147);
 const github = __nccwpck_require__(6448);
+
 let octokit;
 
 
@@ -9842,14 +9843,15 @@ async function run() {
 async function appendBadgeToReadMe(badge) {
   // const res = await octokit.request(`GET /repos/fylein/fyle-app/README.md`);
 
-  const res = await octokit.request("GET /repos/fylein/fyle-app/readme", {
-    owner: "OWNER",
-    repo: "REPO",
-    branch: "duplicate-logger",
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
+  const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`); 
+  // await octokit.request("GET /repos/fylein/fyle-app/readme", {
+  //   owner: "OWNER",
+  //   repo: "REPO",
+  //   branch: "duplicate-logger",
+  //   headers: {
+  //     "X-GitHub-Api-Version": "2022-11-28",
+  //   },
+  // });
   const { path, sha, content, encoding } = res.data;
   console.log("ssshshs", sha);
   const rawContent = Buffer.from(content, encoding).toString();
