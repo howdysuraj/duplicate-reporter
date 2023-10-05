@@ -4106,206 +4106,6 @@ function withCustomRequest(customRequest) {
 
 /***/ }),
 
-/***/ 3854:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-"use strict";
-
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
-  composeCreateOrUpdateTextFile: () => composeCreateOrUpdateTextFile,
-  createOrUpdateTextFile: () => createOrUpdateTextFile
-});
-module.exports = __toCommonJS(dist_src_exports);
-var import_core3 = __nccwpck_require__(1865);
-
-// pkg/dist-src/compose-create-or-update-text-file.js
-var import_core2 = __nccwpck_require__(1865);
-
-// pkg/dist-src/get-file-content.js
-var import_request_error = __nccwpck_require__(4705);
-var import_core = __nccwpck_require__(1865);
-
-// pkg/dist-src/utils.js
-var isNode = globalThis.process && globalThis.process.release && globalThis.process.release.name;
-function nodeUtf8ToBase64(data) {
-  return Buffer.from(data, "utf-8").toString("base64");
-}
-function nodeBase64ToUtf8(data) {
-  return Buffer.from(data, "base64").toString("utf-8");
-}
-function browserUtf8ToBase64(data) {
-  return btoa(
-    encodeURIComponent(data).replace(
-      /%([0-9A-F]{2})/g,
-      function toSolidBytes(_match, p1) {
-        return String.fromCharCode("0x" + p1);
-      }
-    )
-  );
-}
-function browserBase64ToUtf8(data) {
-  return decodeURIComponent(
-    atob(data).split("").map(function(c) {
-      return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join("")
-  );
-}
-var utf8ToBase64 = isNode ? nodeUtf8ToBase64 : browserUtf8ToBase64;
-var base64ToUtf8 = isNode ? nodeBase64ToUtf8 : browserBase64ToUtf8;
-
-// pkg/dist-src/get-file-content.js
-async function getFileContents(octokit, options) {
-  const route = "GET /repos/{owner}/{repo}/contents/{path}";
-  const { branch, ...parameters } = options;
-  const getContentsParameters = {
-    ...parameters,
-    ref: branch
-  };
-  const requestOptions = octokit.request.endpoint(route, getContentsParameters);
-  const { data } = await octokit.request(route, getContentsParameters).catch((error) => {
-    if (error.status !== 404)
-      throw error;
-    return {
-      data: {
-        content: null,
-        type: "",
-        sha: ""
-      }
-    };
-  });
-  if (Array.isArray(data)) {
-    throw new import_request_error.RequestError(
-      `[@octokit/plugin-create-or-update-text-file] ${requestOptions.url} is a directory`,
-      403,
-      {
-        request: requestOptions
-      }
-    );
-  }
-  if (!("sha" in data && "content" in data)) {
-    throw new import_request_error.RequestError(
-      `[@octokit/plugin-create-or-update-text-file] ${requestOptions.url} is not a file, but a ${data.type}`,
-      403,
-      {
-        request: requestOptions
-      }
-    );
-  }
-  if (data.content === null) {
-    return {
-      content: null
-    };
-  }
-  try {
-    return {
-      content: base64ToUtf8(data.content),
-      sha: data.sha
-    };
-  } catch (error) {
-    if (error.message !== "URI malformed")
-      throw error;
-    throw new import_request_error.RequestError(
-      `[@octokit/plugin-create-or-update-text-file] ${requestOptions.url} is a binary file, only text files are supported`,
-      403,
-      {
-        request: requestOptions
-      }
-    );
-  }
-}
-
-// pkg/dist-src/compose-create-or-update-text-file.js
-async function composeCreateOrUpdateTextFile(octokit, options) {
-  const {
-    content: contentOrFn,
-    message,
-    committer,
-    author,
-    ...getOptions
-  } = options;
-  const currentFile = await getFileContents(octokit, getOptions);
-  const content = typeof contentOrFn === "function" ? await contentOrFn({
-    exists: currentFile.content !== null,
-    content: currentFile.content
-  }) : contentOrFn;
-  if (content === currentFile.content) {
-    return {
-      updated: false,
-      deleted: false,
-      data: {},
-      headers: {}
-    };
-  }
-  if (currentFile.sha && content === null) {
-    const response2 = await octokit.request(
-      "DELETE /repos/{owner}/{repo}/contents/{path}",
-      {
-        ...getOptions,
-        message,
-        sha: currentFile.sha
-      }
-    );
-    return {
-      ...response2,
-      updated: true,
-      deleted: true
-    };
-  }
-  const response = await octokit.request(
-    "PUT /repos/{owner}/{repo}/contents/{path}",
-    {
-      ...getOptions,
-      message,
-      ...currentFile,
-      content: utf8ToBase64(content)
-    }
-  );
-  return {
-    ...response,
-    updated: true,
-    deleted: false,
-    content
-  };
-}
-
-// pkg/dist-src/version.js
-var VERSION = "4.0.1";
-
-// pkg/dist-src/index.js
-function createOrUpdateTextFile(octokit) {
-  return {
-    createOrUpdateTextFile(options) {
-      return composeCreateOrUpdateTextFile(octokit, options);
-    }
-  };
-}
-createOrUpdateTextFile.VERSION = VERSION;
-// Annotate the CommonJS export names for ESM import in node:
-0 && (0);
-
-
-/***/ }),
-
 /***/ 6749:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -11088,12 +10888,14 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7346);
 const fs = __nccwpck_require__(7147);
 const github = __nccwpck_require__(6448);
-let octokit;
-const {
-  createOrUpdateTextFile,
-} = __nccwpck_require__(3854);
+const octokit = __nccwpck_require__(1865);
+const client = new octokit.Octokit({ auth: core.getInput("token") });
+// let octokit;
+// const {
+//   createOrUpdateTextFile,
+// } = require("@octokit/plugin-create-or-update-text-file");
 
-const MyOctokit = github.plugin(createOrUpdateTextFile);
+// const MyOctokit = github.plugin(createOrUpdateTextFile);
 
 
 async function generateBadges(report) {
@@ -11108,15 +10910,17 @@ async function generateBadges(report) {
 async function run() {
   try {
    // octokit = new github.getOctokit(core.getInput("token"));
-    octokit = new MyOctokit({ auth: core.getInput("token") });
-    const filepath = core.getInput("path");
-    const data = fs.readFileSync(
-      `${process.env.GITHUB_WORKSPACE}/${filepath}`,
-      "utf8"
-    );
-    const json = JSON.parse(data);
-    const badgesString = await generateBadges(json.statistics);
-    appendBadgeToReadMe(badgesString);
+    // octokit = new MyOctokit({ auth: core.getInput("token") });
+    // const filepath = core.getInput("path");
+    // const data = fs.readFileSync(
+    //   `${process.env.GITHUB_WORKSPACE}/${filepath}`,
+    //   "utf8"
+    // );
+    // const json = JSON.parse(data);
+    // const badgesString = await generateBadges(json.statistics);
+    // appendBadgeToReadMe(badgesString);
+    const res = await client.request(`GET /repos/fyle-in/fyle-app/contents/README.md`);
+    console.log(res);
   } catch (error) {
     core.setFailed(error.message);
   }

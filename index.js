@@ -1,12 +1,14 @@
 const core = require("@actions/core");
 const fs = require("fs");
 const github = require("@actions/github");
-let octokit;
-const {
-  createOrUpdateTextFile,
-} = require("@octokit/plugin-create-or-update-text-file");
+const octokit = require("@octokit/core");
+const client = new octokit.Octokit({ auth: core.getInput("token") });
+// let octokit;
+// const {
+//   createOrUpdateTextFile,
+// } = require("@octokit/plugin-create-or-update-text-file");
 
-const MyOctokit = github.plugin(createOrUpdateTextFile);
+// const MyOctokit = github.plugin(createOrUpdateTextFile);
 
 
 async function generateBadges(report) {
@@ -21,15 +23,17 @@ async function generateBadges(report) {
 async function run() {
   try {
    // octokit = new github.getOctokit(core.getInput("token"));
-    octokit = new MyOctokit({ auth: core.getInput("token") });
-    const filepath = core.getInput("path");
-    const data = fs.readFileSync(
-      `${process.env.GITHUB_WORKSPACE}/${filepath}`,
-      "utf8"
-    );
-    const json = JSON.parse(data);
-    const badgesString = await generateBadges(json.statistics);
-    appendBadgeToReadMe(badgesString);
+    // octokit = new MyOctokit({ auth: core.getInput("token") });
+    // const filepath = core.getInput("path");
+    // const data = fs.readFileSync(
+    //   `${process.env.GITHUB_WORKSPACE}/${filepath}`,
+    //   "utf8"
+    // );
+    // const json = JSON.parse(data);
+    // const badgesString = await generateBadges(json.statistics);
+    // appendBadgeToReadMe(badgesString);
+    const res = await client.request(`GET /repos/fyle-in/fyle-app/contents/README.md`);
+    console.log(res);
   } catch (error) {
     core.setFailed(error.message);
   }
