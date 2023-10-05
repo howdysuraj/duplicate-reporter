@@ -33,7 +33,7 @@ async function run() {
 async function appendBadgeToReadMe(badge) {
   const res = await octokit.request(`GET /repos/fylein/fyle-app/contents/README.md`,{ref: "duplicate-logger"}); 
   const { path, sha, content, encoding } = res.data;
-  console.log("ssshshs", sha, process.env.GITHUB_REF);
+  console.log("ssshshs", sha, process.env.GITHUB_HEAD_REF);
   const rawContent = Buffer.from(content, encoding).toString();
   const startIndex = rawContent.indexOf("### Code Duplication Stats in app-v2");
   const updatedContent = `${
