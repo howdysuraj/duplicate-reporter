@@ -52,7 +52,7 @@ async function appendBadgeToReadMe(badge) {
 
 async function commitNewReadme(path, sha, encoding, updatedContent) {
   try {
-    await octokit.request(`PUT /repos/fylein/fyle-app/contents/README.md`, {
+    await octokit.request(`POST /repos/fylein/fyle-app/contents/README.md`, {
       message: "Update README",
       content: Buffer.from(updatedContent, "utf-8").toString(encoding),
       path,
