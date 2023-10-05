@@ -2,15 +2,18 @@ const core = require("@actions/core");
 const fs = require("fs");
 const github = require("@actions/github");
 const octokit = require("@octokit/core");
-let client ;
-import fetch from "node-fetch";
+const fetch =  require("node-fetch");
+let client = new octokit.Octokit({
+  auth: core.getInput("token"),
+  request: { fetch: fetch },
+});
+
 // let octokit;
 // const {
 //   createOrUpdateTextFile,
 // } = require("@octokit/plugin-create-or-update-text-file");
 
 // const MyOctokit = github.plugin(createOrUpdateTextFile);
-
 
 async function generateBadges(report) {
   let string = `### Code Duplication Stats in app-v2`;
@@ -22,9 +25,10 @@ async function generateBadges(report) {
 }
 
 async function run() {
+  console.log("running")
   try {
-    client = new octokit.Octokit({ auth: core.getInput("token") ,request :{ fetch:fetch}});
-   // octokit = new github.getOctokit(core.getInput("token"));
+ 
+    // octokit = new github.getOctokit(core.getInput("token"));
     // octokit = new MyOctokit({ auth: core.getInput("token") });
     // const filepath = core.getInput("path");
     // const data = fs.readFileSync(
@@ -34,7 +38,9 @@ async function run() {
     // const json = JSON.parse(data);
     // const badgesString = await generateBadges(json.statistics);
     // appendBadgeToReadMe(badgesString);
-    const res = await client.request(`GET /repos/fyle-in/fyle-app/contents/README.md`);
+    const res = await client.request(
+      `GET /repos/fyle-in/fyle-app/contents/README.md`
+    );
     console.log(res);
   } catch (error) {
     core.setFailed(error.message);
